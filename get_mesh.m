@@ -108,7 +108,7 @@ figure(1)
         end
 
     end
-    title(strcat('Q', num2str(polydof_u),'P',num2str(polydof_p)))
+    title(strcat('Q', num2str(polydof_u),'P',num2str(polydof_p),'-mesh'))
     set(gca,'FontName','Helvetica','FontSize',16)
 end
 

@@ -13,17 +13,20 @@ polydof_u = 2;
 % dof of pressure shape function, can be 0 (discontinuous) or 1 (dis/continuous pressure)
 polydof_p = 1;
 % to make discontinuous this must be ON otherwise must be OFF
-discontinuous = 'ON';
+discontinuous = 'OFF';
 % quadrature points can be GAUSS or LGL
 quadmethod = 'LGL';
+% num of quadrature points
+num_quadr_pts = 3;
 
 plot_mesh = 'yes'; 
+% I think minres is fine for now
+UzawaMethod = 'no';
 
 % loop over elements to plot convergence rate
 for i=2:8
 % number of element    
 nelx = i;
-num_quadr_pts = 3;
 msh = get_mesh(a, b, polydof_u, polydof_p, nelx, plot_mesh, discontinuous);
 xu = msh.coords;
 xp = msh.coords_p;
@@ -45,6 +48,8 @@ AT = K(ndof_u+1:end,1:ndof_u);      % K_pu
 A = K(1:ndof_u,ndof_u+1:end);       % K_up
 
 S = AT*inv(H)*A;
+
+if strcmp(UzawaMethod, 'yes')
 lambda = eig(S);
 U0 = zeros(size(F));
 omega = 1/max(lambda);
@@ -69,7 +74,7 @@ error_P=norm(pe - Ph);
 
 EP(i-1) = error_P;
 EU(i-1) = error_U;
-
+end
 
 
 P = [H 0*A;0*AT S];
@@ -104,13 +109,13 @@ lglg_pwr_2 = h.^2;
 leg_enry_2 = 'O(h^1)';
 leg_enry_3 = 'O(h^2)';
 
+if strcmp(discontinuous, 'ON')
 figure(2)
 loglog(h,Ep,h,Eu,'LineWidth',2)
 title(strcat('Q', num2str(polydof_u),'P',num2str(polydof_p)))
 xlabel('h','fontsize',16)
 ylabel('absolute error','fontsize',16)
 grid on
-%legend('Matrix Free FEM')
 set(gca,'FontName','Helvetica','FontSize',14)
 hold on
 loglog(h,lglg_factor_1*(lglg_pwr_1),'r:',h, lglg_factor_2*(lglg_pwr_2),'b--', 'LineWidth',2);
@@ -125,7 +130,32 @@ figure(4)
 plot(er_p)
 title(strcat('Q', num2str(polydof_u),'P',num2str(polydof_p), '-This is the nodal value error for pressure: (pe - ph)'))
     set(gca,'FontName','Helvetica','FontSize',16)
+    
+elseif strcmp(discontinuous, 'OFF')
+ figure(2)
+loglog(h,Ep,h,Eu,'LineWidth',2)
+title(strcat('Q', num2str(polydof_u),'P',num2str(polydof_p),'continuous'))
+xlabel('h','fontsize',16)
+ylabel('absolute error','fontsize',16)
+grid on
+set(gca,'FontName','Helvetica','FontSize',14)
+hold on
+loglog(h,lglg_factor_1*(lglg_pwr_1),'r:',h, lglg_factor_2*(lglg_pwr_2),'b--', 'LineWidth',2);
+legend('pressure','velocity',leg_enry_2,leg_enry_3,'Location','northwest')
 
+figure(3)
+plot(er_u)
+title(strcat('Q', num2str(polydof_u),'P',num2str(polydof_p),'continuous', '-This is the nodal value error for velocity: (ue - uh)'))
+set(gca,'FontName','Helvetica','FontSize',16)
+
+figure(4)
+plot(er_p)
+title(strcat('Q', num2str(polydof_u),'P',num2str(polydof_p),'continuous', '-This is the nodal value error for pressure: (pe - ph)'))
+    set(gca,'FontName','Helvetica','FontSize',16)   
+end
+
+
+if strcmp(UzawaMethod, 'yes')    
 figure(5)
 plot(er_U)
 title(strcat('Q', num2str(polydof_u),'P',num2str(polydof_p), '-(ue - uh) with Uzawa Method'))
@@ -136,5 +166,4 @@ plot(er_P)
 title(strcat('Q', num2str(polydof_u),'P',num2str(polydof_p), '-(pe - ph) with Uzawa Method'))
     set(gca,'FontName','Helvetica','FontSize',16)
     
-    
-    
+end
