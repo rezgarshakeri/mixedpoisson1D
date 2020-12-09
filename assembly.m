@@ -1,4 +1,4 @@
-function [K, F] = assembly(msh, k, num_quadr_pts_in_1d, LM, g)
+function [K, F] = assembly(msh, k, num_quadr_pts, LM, g, discontinuous,quadmethod)
 
 neq = max(max(LM));
 num_elem = msh.num_elem;
@@ -11,7 +11,7 @@ Fg = zeros(neq,1);
 Fb = zeros(neq,1);
 
 for e=1:num_elem
-     [ke_uu,ke_up, ke_pu, ke_pp, fe_u, fe_p] = poisson1Delem(msh, k, num_quadr_pts_in_1d, e);
+     [ke_uu,ke_up, ke_pu, ke_pp, fe_u, fe_p] = poisson1Delem(msh, k, num_quadr_pts, discontinuous,quadmethod, e);
      Ke = [ke_uu ke_up;...
            ke_pu ke_pp];
      Fe = [fe_u;fe_p];

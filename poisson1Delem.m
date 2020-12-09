@@ -1,4 +1,4 @@
- function [ke_uu,ke_up, ke_pu, ke_pp, fe_u, fe_p] = poisson1Delem(msh, k, num_quadr_pts_in_1d, e)
+ function [ke_uu,ke_up, ke_pu, ke_pp, fe_u, fe_p] = poisson1Delem(msh, k, num_quadr_pts, discontinuous,quadmethod, e)
 
 IEN = msh.conn;
 vtx_coords = msh.coords; 
@@ -17,12 +17,12 @@ fe_p = zeros(neldof_p,1);
 % get coordinates of element nodes 
 je = IEN(:,e);  
 coords  = vtx_coords(je); 
-[w , gp]  = gauss(num_quadr_pts_in_1d);            % Gauss points and weights 
+[w , gp]  = get_quadrature(num_quadr_pts,quadmethod);           % quad points and weights 
 
-for i = 1:num_quadr_pts_in_1d  
+for i = 1:num_quadr_pts  
     
   xi = gp(i);
-  [Nu, Np  ]     = get_shape(xi, neldof_u, neldof_p);         % shape functions matrix
+  [Nu, Np  ]     = get_shape(xi, neldof_u, neldof_p, discontinuous);        % shape functions matrix
   [B, div, detJ]     = get_shape_dirv(xi, neldof_u, coords);     % derivative of the shape functions
       
   ke_uu = ke_uu + w(i)*Nu'*kinv*Nu*detJ;   

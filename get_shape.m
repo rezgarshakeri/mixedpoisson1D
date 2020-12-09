@@ -1,4 +1,4 @@
-function [Nu, Np] = get_shape(xi, neldof_u, neldof_p)
+function [Nu, Np] = get_shape(xi, neldof_u, neldof_p, discontinuous)
 
 % 1---2---3
 
@@ -16,9 +16,11 @@ else
 end
 
 % set pressure interpolation
-    if (neldof_p==1)
+    if neldof_p==1
         Np = 1;
-    elseif (neldof_p==2)
+    elseif neldof_p == 2 && strcmp(discontinuous, 'ON')
+        Np = [1 xi];
+    elseif neldof_p == 2 && strcmp(discontinuous, 'OFF')
         N1 = (1-xi)/2;
         N2 = (1+xi)/2;
         Np = [N1 N2];

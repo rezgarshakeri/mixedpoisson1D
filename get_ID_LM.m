@@ -58,7 +58,7 @@ if neldof_p == 1
         ndof = ndof+j;
     end
 
-  elseif  neldof_p == 2 && discontinuous==1
+  elseif  neldof_p == 2 && strcmp(discontinuous, 'ON')
     LM = LM1;
     g = g1;
     for i = 1 :num_elem
@@ -69,7 +69,7 @@ if neldof_p == 1
         ndof = ndof+j;
     end
     
- elseif  neldof_p == 2 && discontinuous==0
+ elseif  neldof_p == 2 && strcmp(discontinuous, 'OFF')
     LM = LM1;
     g = g1;
     for i = 1 :num_elem

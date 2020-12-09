@@ -52,7 +52,7 @@ elseif polydof_u == 2 && polydof_p == 1
    xp = xu(i);  
 end
 
-if polydof_u == 2 && discontinuous == 1
+if polydof_u == 2 && strcmp(discontinuous, 'ON')
        i=1:size(xu)-1;
        xp = (xu(i)+xu(i+1))/2; 
 end
