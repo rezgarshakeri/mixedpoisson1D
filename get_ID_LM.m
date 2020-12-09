@@ -69,7 +69,7 @@ if neldof_p == 1
         ndof = ndof+j;
     end
     
- elseif  neldof_p == 2 
+ elseif  neldof_p == 2 && discontinuous==0
     LM = LM1;
     g = g1;
     for i = 1 :num_elem
