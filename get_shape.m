@@ -19,7 +19,10 @@ end
     if neldof_p==1
         Np = 1;
     elseif neldof_p == 2 && strcmp(discontinuous, 'ON')
-        Np = [1 xi];
+%         Np = [1 xi];
+        N1 = (1-xi)/2;
+        N2 = (1+xi)/2;
+        Np = [N1 N2];
     elseif neldof_p == 2 && strcmp(discontinuous, 'OFF')
         N1 = (1-xi)/2;
         N2 = (1+xi)/2;
