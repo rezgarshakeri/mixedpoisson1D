@@ -13,13 +13,15 @@ polydof_u = 2;
 % dof of pressure shape function, can be 0 (discontinuous) or 1 (dis/continuous pressure)
 polydof_p = 1;
 % to make discontinuous this must be ON otherwise must be OFF
-discontinuous = 'OFF';
+discontinuous = 'ON';
 % quadrature points can be GAUSS or LGL
 quadmethod = 'LGL';
 
 plot_mesh = 'yes'; 
 
-for i=2:2
+% loop over elements to plot convergence rate
+for i=2:8
+% number of element    
 nelx = i;
 num_quadr_pts = 3;
 msh = get_mesh(a, b, polydof_u, polydof_p, nelx, plot_mesh, discontinuous);
