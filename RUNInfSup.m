@@ -7,11 +7,11 @@ b = 1;
 k = 1;
 
 % dof of velocity shape function, can be 1 or 2
-polydof_u = 2;
+polydof_u = 1;
 % dof of pressure shape function, can be 0 (discontinuous) or 1 (dis/continuous pressure)
-polydof_p = 1;
+polydof_p = 0;
 % to make discontinuous this must be ON otherwise must be OFF
-discontinuous = 'OFF';
+discontinuous = 'ON';
 % quadrature points can be GAUSS or LGL
 quadmethod = 'GAUSS';
 % num of quadrature points
@@ -43,7 +43,7 @@ S = K(1:ndof_u,1:ndof_u);           % K_uu, a(u,v)=int(Kinv*u,v), Kinv = 1, here
 AT = K(ndof_u+1:end,1:ndof_u);      % K_pu, b(u,q)
 A = K(1:ndof_u,ndof_u+1:end);       % K_up, b(v,p)
 C = K(ndof_u+1:end,ndof_u+1:end);   % K_pp, <p,q>_L2 which is zero in general, but I need it for inf-sup test
-div_uv = K_div(1:ndof_u,1:ndof_u);
+div_uv = K_div(1:ndof_u,1:ndof_u);  % this is (div(v),div(u))
 % Inf-Sup constant from eq. (3.2) of Arnold 2009
 % <u,v> + b(v,p) + b(u,q) = -lambda1 <p,q>
 % I have created the equivalent of 3.2 as
@@ -82,12 +82,15 @@ figure(2)
 plot(xx,yy1,'LineWidth',3)
 xlabel('log(h)','fontsize',18)
 ylabel('log(\beta_h)','fontsize',18)
-title(strcat('Inf-Sup Constant for mixedpoisson','Q', num2str(polydof_u),'P',num2str(polydof_p)))
+title(strcat('Inf-Sup Constant for mixedpoisson-','Q', num2str(polydof_u),'P',num2str(polydof_p)))
+grid on
+set(gca,'FontName','Helvetica','FontSize',18)
 
 figure(3)
 plot(xx,yy2,'LineWidth',3)
-title(strcat('Coercivity Constant for mixedpoisson','Q', num2str(polydof_u),'P',num2str(polydof_p)))
+title(strcat('Coercivity Constant for mixedpoisson-','Q', num2str(polydof_u),'P',num2str(polydof_p)))
 xlabel('log(h)','fontsize',18)
 ylabel('log(\alpha_h)','fontsize',18)
-
+grid on
+set(gca,'FontName','Helvetica','FontSize',18)
 
