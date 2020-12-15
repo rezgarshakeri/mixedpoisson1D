@@ -69,17 +69,17 @@ alpha = abs(min(lambda2));
 
 % mesh size, i start from 2
 h = 1/i;
-xx(i-1) = log(h);
+xx(i-1) = h;
 % inf-sup constant
-yy1(i-1) = log(beta);
+yy1(i-1) = beta;
 % coercivity constant
-yy2(i-1) = log(alpha);
+yy2(i-1) = alpha;
 
 
 end
 
 figure(2)
-plot(xx,yy1,'LineWidth',3)
+loglog(xx,yy1,'LineWidth',3)
 xlabel('log(h)','fontsize',18)
 ylabel('log(\beta_h)','fontsize',18)
 title(strcat('Inf-Sup Constant for mixedpoisson-','Q', num2str(polydof_u),'P',num2str(polydof_p)))
@@ -87,7 +87,7 @@ grid on
 set(gca,'FontName','Helvetica','FontSize',18)
 
 figure(3)
-plot(xx,yy2,'LineWidth',3)
+loglog(xx,yy2,'LineWidth',3)
 title(strcat('Coercivity Constant for mixedpoisson-','Q', num2str(polydof_u),'P',num2str(polydof_p)))
 xlabel('log(h)','fontsize',18)
 ylabel('log(\alpha_h)','fontsize',18)
